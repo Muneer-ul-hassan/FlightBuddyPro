@@ -25,7 +25,11 @@ interface BrandingOptions {
 
 export default function FlightBookingForm() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [branding, setBranding] = useState<BrandingOptions>({});
+  const [branding, setBranding] = useState<BrandingOptions>({
+    companyName: "THE BETTER FARE",
+    companyAddress: "Atypical Agency",
+    logoUrl: "/attached_assets/logo-768x223_1750261607455.png"
+  });
   const { toast } = useToast();
 
   const form = useForm<FlightBookingForm>({
