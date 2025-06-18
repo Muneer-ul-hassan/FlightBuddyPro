@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking - THE BETTER FARE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="THE BETTER FARE Logo" class="logo" style="display: none;" id="logo">
+            <h1>THE BETTER FARE</h1>
+            <p>Atypical Agency - Professional Flight Booking System</p>
+        </div>
+
+        <div class="form-container">
+            <form id="bookingForm">
+                <!-- Personal Information Section -->
+                <div class="section">
+                    <h3>Contact Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact_name">Contact Name *</label>
+                            <input type="text" id="contact_name" name="contact_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact_email">Email Address *</label>
+                            <input type="email" id="contact_email" name="contact_email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact_phone">Phone Number *</label>
+                            <input type="tel" id="contact_phone" name="contact_phone" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emergency_contact_name">Emergency Contact Name</label>
+                            <input type="text" id="emergency_contact_name" name="emergency_contact_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="emergency_contact_phone">Emergency Contact Phone</label>
+                            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flight Segments Section -->
+                <div class="section">
+                    <h3>Flight Details</h3>
+                    <div class="controls">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addSegment()">Add Flight Segment</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="removeSegment()">Remove Last Segment</button>
+                    </div>
+                    <div id="segments-container">
+                        <!-- Flight segments will be added here -->
+                    </div>
+                </div>
+
+                <!-- Passengers Section -->
+                <div class="section">
+                    <h3>Passenger Information</h3>
+                    <div class="controls">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addPassenger()">Add Passenger</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="removePassenger()">Remove Last Passenger</button>
+                    </div>
+                    <div id="passengers-container">
+                        <!-- Passengers will be added here -->
+                    </div>
+                </div>
+
+                <!-- Special Requests -->
+                <div class="section">
+                    <h3>Special Requests</h3>
+                    <div class="form-group">
+                        <label for="special_requests">Additional Information</label>
+                        <textarea id="special_requests" name="special_requests" rows="4" placeholder="Any special requirements, dietary restrictions, mobility assistance, etc."></textarea>
+                    </div>
+                </div>
+
+                <!-- Generate E-Ticket -->
+                <div class="generate-section">
+                    <h3>Generate Your E-Ticket</h3>
+                    <p>Complete the form above and click below to create your professional e-ticket PDF</p>
+                    <button type="submit" class="btn btn-success">Generate E-Ticket PDF</button>
+                </div>
+            </form>
+
+            <!-- Success/Error Messages -->
+            <div id="messages"></div>
+        </div>
+    </div>
+
+    <script>
+        let segmentCount = 0;
+        let passengerCount = 0;
+
+        // Initialize with one segment and one passenger
+        document.addEventListener('DOMContentLoaded', function() {
+            addSegment();
+            addPassenger();
+            
+            // Check if logo exists
+            const logo = document.getElementById('logo');
+            const img = new Image();
+            img.onload = function() {
+                logo.style.display = 'block';
+            };
+            img.src = logo.src;
+        });
+
+        function addSegment() {
+            if (segmentCount >= 6) {
+                showMessage('Maximum 6 flight segments allowed', 'error');
+                return;
+            }
+            
+            segmentCount++;
+            const container = document.getElementById('segments-container');
+            const segmentDiv = document.createElement('div');
+            segmentDiv.className = 'segment-item';
+            segmentDiv.innerHTML = `
+                <div class="segment-header">
+                    <h4>Flight Segment ${segmentCount}</h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Departure City *</label>
+                        <input type="text" name="segments[${segmentCount-1}][departure_city]" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Arrival City *</label>
+                        <input type="text" name="segments[${segmentCount-1}][arrival_city]" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Departure Date *</label>
+                        <input type="date" name="segments[${segmentCount-1}][departure_date]" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Departure Time *</label>
+                        <input type="time" name="segments[${segmentCount-1}][departure_time]" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Arrival Date *</label>
+                        <input type="date" name="segments[${segmentCount-1}][arrival_date]" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Arrival Time *</label>
+                        <input type="time" name="segments[${segmentCount-1}][arrival_time]" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Flight Number *</label>
+                        <input type="text" name="segments[${segmentCount-1}][flight_number]" required placeholder="e.g. AA123">
+                    </div>
+                    <div class="form-group">
+                        <label>Airline *</label>
+                        <input type="text" name="segments[${segmentCount-1}][airline]" required placeholder="e.g. American Airlines">
+                    </div>
+                    <div class="form-group">
+                        <label>Aircraft Type</label>
+                        <input type="text" name="segments[${segmentCount-1}][aircraft_type]" placeholder="e.g. Boeing 737">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Seat Class *</label>
+                        <select name="segments[${segmentCount-1}][seat_class]" required>
+                            <option value="">Select Class</option>
+                            <option value="Economy">Economy</option>
+                            <option value="Premium Economy">Premium Economy</option>
+                            <option value="Business">Business</option>
+                            <option value="First">First</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fare Basis</label>
+                        <input type="text" name="segments[${segmentCount-1}][fare_basis]" placeholder="e.g. Y">
+                    </div>
+                </div>
+            `;
+            container.appendChild(segmentDiv);
+        }
+
+        function removeSegment() {
+            if (segmentCount <= 1) {
+                showMessage('At least one flight segment is required', 'error');
+                return;
+            }
+            
+            const container = document.getElementById('segments-container');
+            container.removeChild(container.lastChild);
+            segmentCount--;
+        }
+
+        function addPassenger() {
+            if (passengerCount >= 6) {
+                showMessage('Maximum 6 passengers allowed', 'error');
+                return;
+            }
+            
+            passengerCount++;
+            const container = document.getElementById('passengers-container');
+            const passengerDiv = document.createElement('div');
+            passengerDiv.className = 'passenger-item';
+            passengerDiv.innerHTML = `
+                <div class="passenger-header">
+                    <h4>Passenger ${passengerCount}</h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Title *</label>
+                        <select name="passengers[${passengerCount-1}][title]" required>
+                            <option value="">Select Title</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Miss">Miss</option>
+                            <option value="Dr">Dr</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>First Name *</label>
+                        <input type="text" name="passengers[${passengerCount-1}][first_name]" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name *</label>
+                        <input type="text" name="passengers[${passengerCount-1}][last_name]" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date of Birth *</label>
+                        <input type="date" name="passengers[${passengerCount-1}][date_of_birth]" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nationality *</label>
+                        <input type="text" name="passengers[${passengerCount-1}][nationality]" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Passport Number</label>
+                        <input type="text" name="passengers[${passengerCount-1}][passport_number]">
+                    </div>
+                    <div class="form-group">
+                        <label>Passport Expiry</label>
+                        <input type="date" name="passengers[${passengerCount-1}][passport_expiry]">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Baggage Allowance</label>
+                        <select name="passengers[${passengerCount-1}][baggage_allowance]">
+                            <option value="23kg">23kg (Standard)</option>
+                            <option value="32kg">32kg (Extra)</option>
+                            <option value="7kg">7kg (Cabin Only)</option>
+                            <option value="None">No Baggage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Meal Preference</label>
+                        <select name="passengers[${passengerCount-1}][meal_preference]">
+                            <option value="None">No Preference</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Halal">Halal</option>
+                            <option value="Kosher">Kosher</option>
+                            <option value="Gluten Free">Gluten Free</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            container.appendChild(passengerDiv);
+        }
+
+        function removePassenger() {
+            if (passengerCount <= 1) {
+                showMessage('At least one passenger is required', 'error');
+                return;
+            }
+            
+            const container = document.getElementById('passengers-container');
+            container.removeChild(container.lastChild);
+            passengerCount--;
+        }
+
+        function showMessage(message, type) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+            messageDiv.textContent = message;
+            messagesDiv.innerHTML = '';
+            messagesDiv.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            // Convert form data to structured object
+            const data = {
+                contact_name: formData.get('contact_name'),
+                contact_email: formData.get('contact_email'),
+                contact_phone: formData.get('contact_phone'),
+                emergency_contact_name: formData.get('emergency_contact_name') || '',
+                emergency_contact_phone: formData.get('emergency_contact_phone') || '',
+                special_requests: formData.get('special_requests') || '',
+                flight_segments: [],
+                passengers: []
+            };
+            
+            // Parse flight segments
+            for (let i = 0; i < segmentCount; i++) {
+                const segment = {
+                    departure_city: formData.get(`segments[${i}][departure_city]`),
+                    arrival_city: formData.get(`segments[${i}][arrival_city]`),
+                    departure_date: formData.get(`segments[${i}][departure_date]`),
+                    departure_time: formData.get(`segments[${i}][departure_time]`),
+                    arrival_date: formData.get(`segments[${i}][arrival_date]`),
+                    arrival_time: formData.get(`segments[${i}][arrival_time]`),
+                    flight_number: formData.get(`segments[${i}][flight_number]`),
+                    airline: formData.get(`segments[${i}][airline]`),
+                    aircraft_type: formData.get(`segments[${i}][aircraft_type]`) || '',
+                    seat_class: formData.get(`segments[${i}][seat_class]`),
+                    fare_basis: formData.get(`segments[${i}][fare_basis]`) || ''
+                };
+                data.flight_segments.push(segment);
+            }
+            
+            // Parse passengers
+            for (let i = 0; i < passengerCount; i++) {
+                const passenger = {
+                    title: formData.get(`passengers[${i}][title]`),
+                    first_name: formData.get(`passengers[${i}][first_name]`),
+                    last_name: formData.get(`passengers[${i}][last_name]`),
+                    date_of_birth: formData.get(`passengers[${i}][date_of_birth]`),
+                    nationality: formData.get(`passengers[${i}][nationality]`),
+                    passport_number: formData.get(`passengers[${i}][passport_number]`) || '',
+                    passport_expiry: formData.get(`passengers[${i}][passport_expiry]`) || null,
+                    baggage_allowance: formData.get(`passengers[${i}][baggage_allowance]`) || '23kg',
+                    meal_preference: formData.get(`passengers[${i}][meal_preference]`) || 'None'
+                };
+                data.passengers.push(passenger);
+            }
+            
+            try {
+                // Show loading state
+                form.classList.add('loading');
+                
+                // Create booking
+                const response = await fetch('/api/booking', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(`Booking created successfully! Reference: ${result.booking_reference}`, 'success');
+                    
+                    // Download PDF
+                    window.open(`/api/booking/${result.booking_reference}/pdf`, '_blank');
+                } else {
+                    showMessage(result.error || 'Failed to create booking', 'error');
+                }
+            } catch (error) {
+                showMessage('Error creating booking: ' + error.message, 'error');
+            } finally {
+                form.classList.remove('loading');
+            }
+        });
+    </script>
+</body>
+</html>
