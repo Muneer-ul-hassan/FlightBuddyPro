@@ -12,8 +12,8 @@ export default function FlightBookingPage() {
               <Plane className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Flight Booking Form</h1>
-              <p className="text-gray-600">Complete your booking details below</p>
+              <h1 className="text-2xl font-bold text-gray-900">Professional E-Ticket Generator</h1>
+              <p className="text-gray-600">Enter client details and generate professional e-tickets instantly</p>
             </div>
           </div>
         </div>

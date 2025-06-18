@@ -175,35 +175,26 @@ export default function FlightBookingForm() {
           </CardContent>
         </Card>
 
-        {/* Submit Section */}
+        {/* Generate E-Ticket Section */}
         <Card>
           <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="text-center">
               <Button
                 type="button"
                 onClick={handleGeneratePDF}
                 disabled={isGeneratingPDF}
-                className="flex-1 bg-airline-blue text-white hover:bg-airline-dark"
+                className="w-full sm:w-auto px-8 py-4 bg-airline-blue text-white hover:bg-airline-dark text-lg font-semibold"
               >
                 {isGeneratingPDF ? (
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  <Loader2 className="w-6 h-6 mr-3 animate-spin" />
                 ) : (
-                  <Download className="w-5 h-5 mr-2" />
+                  <Download className="w-6 h-6 mr-3" />
                 )}
-                {isGeneratingPDF ? "Generating PDF..." : "Generate & Download PDF"}
+                {isGeneratingPDF ? "Generating E-Ticket..." : "Generate Professional E-Ticket"}
               </Button>
-              <Button
-                type="submit"
-                disabled={submitBookingMutation.isPending}
-                className="flex-1 bg-green-600 hover:bg-green-700"
-              >
-                {submitBookingMutation.isPending ? (
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                ) : (
-                  <CheckCircle className="w-5 h-5 mr-2" />
-                )}
-                {submitBookingMutation.isPending ? "Submitting..." : "Submit Booking"}
-              </Button>
+              <p className="text-sm text-gray-500 mt-3">
+                Creates a professional airline-style e-ticket PDF for your client
+              </p>
             </div>
           </CardContent>
         </Card>
