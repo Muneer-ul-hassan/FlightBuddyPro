@@ -93,10 +93,19 @@ This is a comprehensive flight booking application built with a modern full-stac
 - **Start Command**: npm run start
 - **Port Mapping**: Internal port 5000 to external port 80
 
+## Recent Changes
+
+### June 18, 2025
+- Initial flight booking form setup with dynamic segments and passengers
+- Professional PDF generation matching airline e-ticket format
+- Company branding system with logo upload and contact information
+- HTML-based PDF generation for reliable cross-platform compatibility
+
 ## Changelog
 ```
 Changelog:
-- June 18, 2025. Initial setup
+- June 18, 2025. Initial setup with professional e-ticket generator
+- June 18, 2025. Added company branding feature with logo upload
 ```
 
 ## User Preferences
