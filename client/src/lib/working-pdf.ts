@@ -4,7 +4,7 @@ export function generateWorkingPDF(formData: FlightBookingForm): void {
   // Generate PNR
   const pnr = Math.random().toString(36).substring(2, 8).toUpperCase();
   
-  // Create HTML content for the e-ticket
+  // Create HTML content matching the exact structure from the sample
   const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -12,47 +12,151 @@ export function generateWorkingPDF(formData: FlightBookingForm): void {
     <meta charset="UTF-8">
     <title>E-Ticket ${pnr}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; font-size: 12px; }
-        .header { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
-        .pnr { font-size: 14px; font-weight: bold; margin: 10px 0; }
-        .section { margin: 15px 0; }
-        .section-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; }
-        .passenger-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-        .passenger-table th, .passenger-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        .passenger-table th { background-color: #f0f0f0; font-weight: bold; }
-        .flight-box { border: 1px solid #ccc; padding: 10px; margin: 10px 0; background-color: #f9f9f9; }
-        .route { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
-        .important { background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; margin: 15px 0; font-weight: bold; }
-        @media print { body { margin: 0; } }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            margin: 40px; 
+            font-size: 11px; 
+            line-height: 1.4;
+            color: #000;
+        }
+        .header { 
+            text-align: center; 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin-bottom: 30px; 
+            letter-spacing: 2px;
+        }
+        .issue-date { 
+            text-align: right; 
+            margin-bottom: 20px; 
+            font-size: 11px;
+        }
+        .pnr-section { 
+            margin-bottom: 40px; 
+            font-size: 11px;
+        }
+        .flight-segment { 
+            margin-bottom: 30px; 
+            page-break-inside: avoid;
+        }
+        .route-title { 
+            font-size: 12px; 
+            font-weight: bold; 
+            margin-bottom: 15px;
+        }
+        .flight-details { 
+            margin-left: 0; 
+            line-height: 1.6;
+        }
+        .flight-details div { 
+            margin-bottom: 4px;
+        }
+        .passenger-section { 
+            margin: 40px 0; 
+            page-break-inside: avoid;
+        }
+        .passenger-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0;
+            font-size: 11px;
+        }
+        .passenger-table th { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            text-align: center; 
+            font-weight: bold;
+            background-color: #f8f8f8;
+        }
+        .passenger-table td { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            text-align: center; 
+            vertical-align: middle;
+        }
+        .passenger-name { 
+            font-weight: bold;
+        }
+        .baggage-details {
+            font-size: 10px;
+            line-height: 1.3;
+        }
+        .important-notice { 
+            margin: 30px 0; 
+            padding: 15px;
+            background-color: #fff8dc;
+            border: 1px solid #ddd;
+            font-weight: bold; 
+            font-size: 10px;
+            text-align: justify;
+            line-height: 1.4;
+        }
+        @media print { 
+            body { margin: 20px; } 
+            .important-notice { background-color: #f9f9f9 !important; }
+        }
     </style>
 </head>
 <body>
     <div class="header">ELECTRONIC TICKET</div>
-    <div>Issued on: ${new Date().toLocaleDateString('en-GB')}</div>
-    <div class="pnr">Booking Reference (PNR): ${pnr}</div>
+    <div class="issue-date">Issued on: ${new Date().toLocaleDateString('en-GB')}</div>
     
-    <div class="section">
-        <div class="section-title">Passenger(s) Information</div>
+    <div class="pnr-section">
+        <strong>Booking Reference (PNR): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${pnr}</strong>
+    </div>
+    
+    <br><br>
+    
+    ${formData.flightSegments.map(segment => {
+      const date = new Date(segment.date);
+      const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+      const dayName = days[date.getDay()];
+      const dayNum = date.getDate().toString().padStart(2, '0');
+      const monthName = months[date.getMonth()];
+      
+      return `
+        <div class="flight-segment">
+            <div class="route-title">${segment.from} – ${segment.to}</div>
+            <br>
+            <div class="flight-details">
+                <div><strong>Flight &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${segment.flightNumber}</strong></div>
+                <br>
+                <div><strong>Operated By &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${segment.airline}</strong></div>
+                <br>
+                <div><strong>Departure &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${dayName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${dayNum} ${monthName} &nbsp;&nbsp;&nbsp;&nbsp;${segment.departureTime} &nbsp;&nbsp;&nbsp;${segment.from} Airport</strong></div>
+                <br>
+                <div><strong>Arrival &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${dayName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${dayNum} ${monthName} &nbsp;&nbsp;&nbsp;&nbsp;${segment.arrivalTime} &nbsp;&nbsp;&nbsp;${segment.to} Airport</strong></div>
+            </div>
+            <br><br>
+        </div>
+      `;
+    }).join('')}
+    
+    <div class="passenger-section">
         <table class="passenger-table">
             <tr>
-                <th>Passenger Name</th>
-                <th>Baggage Limit</th>
-                <th>e-Ticket Number</th>
+                <th style="width: 30%;">Passenger (s) Name</th>
+                <th style="width: 40%;">Baggage Limit</th>
+                <th style="width: 30%;">e-Ticket Number</th>
             </tr>
             ${formData.passengers.map((passenger, index) => {
               const nameUpper = passenger.name.toUpperCase().replace(' ', '/');
               const title = index === 0 ? 'Mr.' : 'Ms.';
               const baggage = passenger.baggage || [];
-              let baggageText = '';
-              if (baggage.includes('carry')) baggageText += '1x 7kg Hand baggage<br>';
-              if (baggage.includes('checked')) baggageText += '1x 25kg Checked baggage<br>';
-              if (baggage.includes('personal')) baggageText += '1x Personal Bag included<br>';
-              if (baggage.length === 0) baggageText = '1x Personal Bag included';
+              
+              let baggageLines = [];
+              if (baggage.includes('carry')) baggageLines.push('1x 7kg Hand baggage');
+              if (baggage.includes('checked')) baggageLines.push('1x 25kg Checked baggage');
+              if (baggage.includes('personal')) baggageLines.push('1x Personal Bag included');
+              if (baggage.length === 0) baggageLines.push('1x Personal Bag included');
+              
+              const baggageText = baggageLines.join('<br>');
               
               return `
                 <tr>
-                    <td><strong>${nameUpper} ${title}</strong></td>
-                    <td>${baggageText}</td>
+                    <td class="passenger-name">${nameUpper} ${title}</td>
+                    <td class="baggage-details">${baggageText}</td>
                     <td>${passenger.eTicketNumber}</td>
                 </tr>
               `;
@@ -60,36 +164,13 @@ export function generateWorkingPDF(formData: FlightBookingForm): void {
         </table>
     </div>
     
-    <div class="important">
-        IMPORTANT: PLEASE ENSURE YOU CHECK YOUR EMAILS RECEIVED FROM THE AIRLINE
-        OR FROM THE TRAVEL AGENCY REGARDING ANY CHANGES OR CANCELLATIONS AND
-        STAY AWARE OF ANY CHANGES IN THE SCHEDULE MADE BY THE AIRLINE. YOU CAN
-        ALWAYS VERIFY YOUR TRAVEL DETAILS FROM THE AIRLINE WEBSITE.
+    <div class="important-notice">
+        <strong>IMPORTANT: PLEASE ENSURE YOU CHECK YOUR EMAILS RECEIVED FROM THE AIRLINE<br>
+        OR FROM THE TRAVEL AGENCY REGARDING ANY CHANGES OR CANCELLATIONS AND<br>
+        STAY AWARE OF ANY CHANGES IN THE SCHEDULE MADE BY THE AIRLINE. YOU CAN<br>
+        ALWAYS VERIFY YOUR TRAVEL DETAILS FROM THE AIRLINE WEBSITE.</strong>
     </div>
     
-    <div class="section">
-        ${formData.flightSegments.map(segment => {
-          const date = new Date(segment.date);
-          const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-          const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-          const formattedDate = `${days[date.getDay()]} ${date.getDate().toString().padStart(2, '0')} ${months[date.getMonth()]}`;
-          
-          return `
-            <div class="route">${segment.from} – ${segment.to}</div>
-            <div class="flight-box">
-                <div><strong>Flight ${segment.flightNumber}</strong></div>
-                <div>Operated By ${segment.airline}</div>
-                <div>Departure ${formattedDate} ${segment.departureTime} ${segment.from} Airport</div>
-                <div>Arrival   ${formattedDate} ${segment.arrivalTime} ${segment.to} Airport</div>
-            </div>
-          `;
-        }).join('')}
-    </div>
-    
-    <div style="margin-top: 30px; font-size: 10px; color: #666;">
-        This is a computer-generated e-ticket. Please keep this document for your records.<br>
-        For any inquiries, please contact customer service with your booking reference number.
-    </div>
 </body>
 </html>`;
 
