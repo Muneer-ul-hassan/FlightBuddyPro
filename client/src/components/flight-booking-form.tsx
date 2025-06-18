@@ -12,7 +12,7 @@ import { Download, CheckCircle, Loader2 } from "lucide-react";
 import PersonalInfoSection from "./personal-info-section";
 import FlightSegmentsSection from "./flight-segments-section";
 import PassengersSection from "./passengers-section";
-import { generateSimplePDF } from "@/lib/simple-pdf";
+import { generateWorkingPDF } from "@/lib/working-pdf";
 
 export default function FlightBookingForm() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -96,15 +96,15 @@ export default function FlightBookingForm() {
     setIsGeneratingPDF(true);
     try {
       const formData = form.getValues();
-      await generateSimplePDF(formData);
+      generateWorkingPDF(formData);
       toast({
         title: "E-Ticket Generated Successfully!",
-        description: "Your professional e-ticket has been downloaded.",
+        description: "Your professional e-ticket is ready to print or save.",
       });
     } catch (error) {
       toast({
-        title: "PDF Generation Failed",
-        description: "There was an error generating the PDF. Please try again.",
+        title: "Generation Failed",
+        description: "There was an error. Please try again.",
         variant: "destructive",
       });
     } finally {
