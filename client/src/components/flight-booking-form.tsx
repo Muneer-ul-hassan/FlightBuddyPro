@@ -12,10 +12,20 @@ import { Download, CheckCircle, Loader2 } from "lucide-react";
 import PersonalInfoSection from "./personal-info-section";
 import FlightSegmentsSection from "./flight-segments-section";
 import PassengersSection from "./passengers-section";
+import BrandingSection from "./branding-section";
 import { generateWorkingPDF } from "@/lib/working-pdf";
+
+interface BrandingOptions {
+  logoUrl?: string;
+  companyName?: string;
+  companyAddress?: string;
+  companyPhone?: string;
+  companyEmail?: string;
+}
 
 export default function FlightBookingForm() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [branding, setBranding] = useState<BrandingOptions>({});
   const { toast } = useToast();
 
   const form = useForm<FlightBookingForm>({
@@ -96,10 +106,10 @@ export default function FlightBookingForm() {
     setIsGeneratingPDF(true);
     try {
       const formData = form.getValues();
-      generateWorkingPDF(formData);
+      generateWorkingPDF(formData, branding);
       toast({
         title: "E-Ticket Generated Successfully!",
-        description: "Your professional e-ticket is ready to print or save.",
+        description: "Your professional e-ticket with branding is ready to print or save.",
       });
     } catch (error) {
       toast({
@@ -115,6 +125,7 @@ export default function FlightBookingForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <BrandingSection branding={branding} onBrandingChange={setBranding} />
         <PersonalInfoSection form={form} />
         <FlightSegmentsSection form={form} />
         <PassengersSection form={form} />

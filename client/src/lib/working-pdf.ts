@@ -1,6 +1,14 @@
 import { FlightBookingForm } from "@shared/schema";
 
-export function generateWorkingPDF(formData: FlightBookingForm): void {
+interface BrandingOptions {
+  logoUrl?: string;
+  companyName?: string;
+  companyAddress?: string;
+  companyPhone?: string;
+  companyEmail?: string;
+}
+
+export function generateWorkingPDF(formData: FlightBookingForm, branding?: BrandingOptions): void {
   // Generate PNR
   const pnr = Math.random().toString(36).substring(2, 8).toUpperCase();
   
@@ -18,6 +26,22 @@ export function generateWorkingPDF(formData: FlightBookingForm): void {
             font-size: 11px; 
             line-height: 1.4;
             color: #000;
+        }
+        .logo-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+        .logo {
+            max-height: 50px;
+            max-width: 150px;
+        }
+        .company-info {
+            text-align: right;
+            font-size: 9px;
+            line-height: 1.3;
         }
         .header { 
             text-align: center; 
@@ -98,6 +122,20 @@ export function generateWorkingPDF(formData: FlightBookingForm): void {
     </style>
 </head>
 <body>
+    ${branding ? `
+    <div class="logo-section">
+        <div>
+            ${branding.logoUrl ? `<img src="${branding.logoUrl}" alt="Company Logo" class="logo">` : ''}
+        </div>
+        <div class="company-info">
+            ${branding.companyName ? `<strong>${branding.companyName}</strong><br>` : ''}
+            ${branding.companyAddress ? `${branding.companyAddress}<br>` : ''}
+            ${branding.companyPhone ? `Tel: ${branding.companyPhone}<br>` : ''}
+            ${branding.companyEmail ? `Email: ${branding.companyEmail}` : ''}
+        </div>
+    </div>
+    ` : ''}
+    
     <div class="header">ELECTRONIC TICKET</div>
     <div class="issue-date">Issued on: ${new Date().toLocaleDateString('en-GB')}</div>
     
