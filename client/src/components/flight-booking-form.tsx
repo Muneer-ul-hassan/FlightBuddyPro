@@ -12,7 +12,7 @@ import { Download, CheckCircle, Loader2 } from "lucide-react";
 import PersonalInfoSection from "./personal-info-section";
 import FlightSegmentsSection from "./flight-segments-section";
 import PassengersSection from "./passengers-section";
-import { generatePDF } from "@/lib/pdf-utils";
+import { generateSimplePDF } from "@/lib/simple-pdf";
 
 export default function FlightBookingForm() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -96,10 +96,10 @@ export default function FlightBookingForm() {
     setIsGeneratingPDF(true);
     try {
       const formData = form.getValues();
-      await generatePDF(formData);
+      await generateSimplePDF(formData);
       toast({
-        title: "PDF Generated Successfully!",
-        description: "Your booking confirmation has been downloaded.",
+        title: "E-Ticket Generated Successfully!",
+        description: "Your professional e-ticket has been downloaded.",
       });
     } catch (error) {
       toast({

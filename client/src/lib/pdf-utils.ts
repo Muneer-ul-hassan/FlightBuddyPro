@@ -6,23 +6,42 @@ declare global {
   }
 }
 
+async function loadJsPDF(): Promise<void> {
+  if (window.jsPDF) return;
+  
+  return new Promise<void>((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    script.async = true;
+    
+    script.onload = () => {
+      // Wait a bit for the library to initialize
+      setTimeout(() => {
+        if (window.jsPDF && typeof window.jsPDF.jsPDF === 'function') {
+          resolve();
+        } else {
+          reject(new Error('jsPDF failed to initialize'));
+        }
+      }, 100);
+    };
+    
+    script.onerror = () => reject(new Error('Failed to load jsPDF script'));
+    
+    document.head.appendChild(script);
+    
+    // Timeout after 15 seconds
+    setTimeout(() => reject(new Error('jsPDF loading timeout')), 15000);
+  });
+}
+
 export async function generatePDF(formData: FlightBookingForm): Promise<void> {
   try {
-    // Dynamically load jsPDF
-    if (!window.jsPDF) {
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      document.head.appendChild(script);
-      
-      await new Promise<void>((resolve, reject) => {
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Failed to load jsPDF library'));
-        setTimeout(() => reject(new Error('jsPDF loading timeout')), 10000);
-      });
-    }
-
-    if (!window.jsPDF?.jsPDF) {
-      throw new Error('jsPDF library not available');
+    // Load jsPDF with better error handling
+    await loadJsPDF();
+    
+    // Check if jsPDF is properly loaded
+    if (!window.jsPDF || typeof window.jsPDF.jsPDF !== 'function') {
+      throw new Error('jsPDF library failed to load properly');
     }
 
     const { jsPDF } = window.jsPDF;
