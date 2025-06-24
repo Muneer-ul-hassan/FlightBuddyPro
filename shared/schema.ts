@@ -31,11 +31,8 @@ export const flightSegmentSchema = z.object({
 });
 
 export const passengerSchema = z.object({
-  title: z.string().optional(),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  dateOfBirth: z.string().optional(),
-  nationality: z.string().optional(),
+  fullName: z.string().optional(),
+  eTicketNumber: z.string().optional(),
   passportNumber: z.string().optional(),
   passportExpiry: z.string().optional(),
   baggageQuantity: z.string().optional(),
