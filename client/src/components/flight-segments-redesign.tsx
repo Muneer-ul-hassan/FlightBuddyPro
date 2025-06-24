@@ -393,7 +393,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
               name={`flightSegments.${index}.departureDate`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Departure Date *</FormLabel>
+                  <FormLabel>Departure Date</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -407,7 +407,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
               name={`flightSegments.${index}.departureTime`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Departure Time *</FormLabel>
+                  <FormLabel>Departure Time</FormLabel>
                   <FormControl>
                     <Input type="time" {...field} />
                   </FormControl>
@@ -421,7 +421,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
               name={`flightSegments.${index}.arrivalDate`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Arrival Date *</FormLabel>
+                  <FormLabel>Arrival Date</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -435,7 +435,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
               name={`flightSegments.${index}.arrivalTime`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Arrival Time *</FormLabel>
+                  <FormLabel>Arrival Time</FormLabel>
                   <FormControl>
                     <Input type="time" {...field} />
                   </FormControl>
@@ -451,7 +451,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
               name={`flightSegments.${index}.flightNumber`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Flight Number *</FormLabel>
+                  <FormLabel>Flight Number</FormLabel>
                   <FormControl>
                     <Input placeholder="QR605" {...field} />
                   </FormControl>
@@ -465,7 +465,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
               name={`flightSegments.${index}.airline`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Operated By *</FormLabel>
+                  <FormLabel>Operated By</FormLabel>
                   <FormControl>
                     <Input placeholder="Qatar Airways" {...field} />
                   </FormControl>

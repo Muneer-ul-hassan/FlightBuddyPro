@@ -82,7 +82,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.title`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title *</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -107,7 +107,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.firstName`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Passenger Name (Manual Entry) *</FormLabel>
+                  <FormLabel>Passenger Name (Manual Entry)</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="AHMED/HASSAN Mr." 
@@ -126,7 +126,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.lastName`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name *</FormLabel>
+                  <FormLabel>Last Name</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="MUHAMMAD" 
@@ -147,7 +147,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.dateOfBirth`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth *</FormLabel>
+                  <FormLabel>Date of Birth</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -161,7 +161,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.nationality`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nationality *</FormLabel>
+                  <FormLabel>Nationality</FormLabel>
                   <FormControl>
                     <Input placeholder="Pakistani" {...field} />
                   </FormControl>
