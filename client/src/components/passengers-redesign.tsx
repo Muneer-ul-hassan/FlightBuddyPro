@@ -82,7 +82,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.title`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title *</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -107,7 +107,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.firstName`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Passenger Name (Manual Entry) *</FormLabel>
+                  <FormLabel>Passenger Name (Manual Entry)</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="AHMED/HASSAN Mr." 
@@ -126,7 +126,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.lastName`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name *</FormLabel>
+                  <FormLabel>Last Name</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="MUHAMMAD" 
@@ -147,7 +147,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.dateOfBirth`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth *</FormLabel>
+                  <FormLabel>Date of Birth</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -161,7 +161,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
               name={`passengers.${index}.nationality`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nationality *</FormLabel>
+                  <FormLabel>Nationality</FormLabel>
                   <FormControl>
                     <Input placeholder="Pakistani" {...field} />
                   </FormControl>
@@ -171,49 +171,146 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
             />
           </div>
           
-          <div className="space-y-4 mb-4">
-            <h5 className="font-medium text-gray-900">Baggage Information</h5>
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name={`passengers.${index}.baggageQuantity`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Quantity</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="1" 
-                        min="0"
-                        max="10"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`passengers.${index}.baggageWeight`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Weight</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="text" 
-                        placeholder="23kg" 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          {/* Baggage Information */}
+          <div className="mt-6">
+            <h4 className="font-medium text-gray-900 mb-4">Baggage Information</h4>
+            
+            {/* Checked Baggage */}
+            <div className="mb-4">
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Checked Baggage</h5>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name={`passengers.${index}.baggageQuantity`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Quantity</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="1" 
+                          min="0"
+                          max="10"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`passengers.${index}.baggageWeight`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Weight</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="text" 
+                          placeholder="23kg" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-            <div className="text-sm text-gray-600 bg-white p-3 rounded border">
-              <div>1x 7kg Hand baggage</div>
-              <div>1x Personal Bag included</div>
+
+            {/* Hand Baggage */}
+            <div className="mb-4">
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Hand Baggage</h5>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name={`passengers.${index}.handBaggageQuantity`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Quantity</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="1" 
+                          min="0"
+                          max="5"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`passengers.${index}.handBaggageWeight`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Weight</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="text" 
+                          placeholder="7kg" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Personal Bag */}
+            <div className="mb-4">
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Personal Bag</h5>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name={`passengers.${index}.personalBagQuantity`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Quantity</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="1" 
+                          min="0"
+                          max="2"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`passengers.${index}.personalBagWeight`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Weight/Size</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="text" 
+                          placeholder="Small" 
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200">
+              <p className="text-sm text-blue-800">
+                Standard allowance: 1x 7kg Hand baggage, 1x Personal Bag included
+              </p>
             </div>
           </div>
         </div>

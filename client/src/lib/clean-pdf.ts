@@ -5,8 +5,12 @@ interface BrandingOptions {
 }
 
 export function generateWorkingPDF(formData: FlightBookingForm, branding?: BrandingOptions): void {
-  const printWindow = window.open('', '_blank');
-  if (!printWindow) return;
+  try {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert('Popup blocked! Please allow popups for PDF generation.');
+      return;
+    }
 
   const generatePNR = () => Math.random().toString(36).substring(2, 8).toUpperCase();
   const pnr = generatePNR();
@@ -182,12 +186,16 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
 </html>
   `;
 
-  printWindow.document.write(htmlContent);
-  printWindow.document.close();
-  
-  printWindow.onload = () => {
-    setTimeout(() => {
-      printWindow.print();
-    }, 500);
-  };
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+    
+    printWindow.onload = () => {
+      setTimeout(() => {
+        printWindow.print();
+      }, 500);
+    };
+  } catch (error) {
+    console.error('PDF generation error:', error);
+    alert('PDF generation failed. Please try again.');
+  }
 }

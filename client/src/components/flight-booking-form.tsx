@@ -97,16 +97,6 @@ export default function FlightBookingForm() {
   };
 
   const handleGeneratePDF = async () => {
-    const isValid = await form.trigger();
-    if (!isValid) {
-      toast({
-        title: "Please fix errors",
-        description: "Please complete all required fields before generating PDF.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsGeneratingPDF(true);
     try {
       const formData = form.getValues();
@@ -116,6 +106,7 @@ export default function FlightBookingForm() {
         description: "Your professional e-ticket with branding is ready to print or save.",
       });
     } catch (error) {
+      console.error('PDF generation error:', error);
       toast({
         title: "Generation Failed",
         description: "There was an error. Please try again.",
@@ -134,61 +125,9 @@ export default function FlightBookingForm() {
         <FlightSegmentsSection form={form} />
         <PassengersSection form={form} />
 
-        {/* Consent Section */}
-        <Card>
-          <CardContent className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2 text-airline-blue" />
-              Terms & Conditions
-            </h2>
-            <div className="flex items-start space-x-3">
-              <input
-                type="checkbox"
-                {...form.register("consentGiven")}
-                className="mt-1 w-4 h-4 text-airline-blue border-gray-300 rounded focus:ring-airline-blue focus:ring-2"
-              />
-              <label className="text-sm text-gray-700 leading-relaxed">
-                I agree to the booking terms and conditions{" "}
-                <span className="text-red-500">*</span>
-                <br />
-                <span className="text-gray-500 text-xs">
-                  By checking this box, you confirm that you have read and agree to our booking terms,
-                  privacy policy, and cancellation conditions.
-                </span>
-              </label>
-            </div>
-            {form.formState.errors.consentGiven && (
-              <p className="text-red-500 text-sm mt-1">
-                {form.formState.errors.consentGiven.message}
-              </p>
-            )}
-          </CardContent>
-        </Card>
 
-        {/* Payment Section */}
-        <Card>
-          <CardContent className="p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-              <svg className="w-5 h-5 mr-2 text-airline-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-              </svg>
-              Payment Method (Optional)
-            </h2>
-            <div className="max-w-md">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Payment Method
-              </label>
-              <select
-                {...form.register("paymentMethod")}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-airline-blue focus:border-transparent transition-colors"
-              >
-                <option value="">Choose payment method</option>
-                <option value="stripe">Credit/Debit Card (Stripe)</option>
-                <option value="paypal">PayPal</option>
-              </select>
-            </div>
-          </CardContent>
-        </Card>
+
+
 
         {/* Generate E-Ticket Section */}
         <Card>
