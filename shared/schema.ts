@@ -31,16 +31,15 @@ export const flightSegmentSchema = z.object({
 });
 
 export const passengerSchema = z.object({
-  fullName: z.string().optional(),
-  eTicketNumber: z.string().optional(),
+  title: z.string().min(1, "Title is required"),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  nationality: z.string().min(1, "Nationality is required"),
   passportNumber: z.string().optional(),
   passportExpiry: z.string().optional(),
   baggageQuantity: z.string().optional(),
   baggageWeight: z.string().optional(),
-  handBaggageQuantity: z.string().optional(),
-  handBaggageWeight: z.string().optional(),
-  personalBagQuantity: z.string().optional(),
-  personalBagWeight: z.string().optional(),
   mealPreference: z.string().optional(),
 });
 
@@ -50,8 +49,8 @@ export const flightBookingSchema = z.object({
   contactPhone: z.string().default("+1-555-0123"),
   emergencyContactName: z.string().optional(),
   emergencyContactPhone: z.string().optional(),
-  flightSegments: z.array(flightSegmentSchema).optional(),
-  passengers: z.array(passengerSchema).optional(),
+  flightSegments: z.array(flightSegmentSchema).min(1, "At least one flight segment is required").max(6, "Maximum 6 flight segments allowed"),
+  passengers: z.array(passengerSchema).min(1, "At least one passenger is required").max(6, "Maximum 6 passengers allowed"),
   specialRequests: z.string().optional(),
 });
 
