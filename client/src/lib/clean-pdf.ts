@@ -201,4 +201,3 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
     alert('PDF generation failed. Please try again.');
   }
 }
-```Ok, I will continue generating the code.
