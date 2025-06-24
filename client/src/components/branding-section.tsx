@@ -35,7 +35,8 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
   };
 
     const useDefaultLogo = () => {
-        const defaultLogoUrl = "/company-logo.png";
+        // You can replace this with your actual company logo URL
+        const defaultLogoUrl = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjNjM2NkYxIi8+Cjx0ZXh0IHg9IjUwIiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q09NUEFOWTwvdGV4dD4KPHN2Zz4K";
         onBrandingChange({ ...branding, logoUrl: defaultLogoUrl });
     };
 

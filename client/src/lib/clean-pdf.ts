@@ -15,12 +15,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
   const generatePNR = () => Math.random().toString(36).substring(2, 8).toUpperCase();
   const pnr = generatePNR();
   
-  // Company logo HTML
-  const logoHtml = branding?.logoUrl ? `
-    <div style="text-align: left; margin-bottom: 20px;">
-      <img src="${branding.logoUrl}" alt="Company Logo" style="height: 60px; width: auto;">
-    </div>
-  ` : '';
+  
 
   const htmlContent = `
 <!DOCTYPE html>
