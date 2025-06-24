@@ -33,26 +33,19 @@ export const flightSegmentSchema = z.object({
 export const passengerSchema = z.object({
   fullName: z.string().optional(),
   eTicketNumber: z.string().optional(),
-  passportNumber: z.string().optional(),
-  passportExpiry: z.string().optional(),
+  contactNumber: z.string().optional(),
   baggageQuantity: z.string().optional(),
   baggageWeight: z.string().optional(),
   handBaggageQuantity: z.string().optional(),
   handBaggageWeight: z.string().optional(),
   personalBagQuantity: z.string().optional(),
   personalBagWeight: z.string().optional(),
-  mealPreference: z.string().optional(),
 });
 
 export const flightBookingSchema = z.object({
-  contactName: z.string().default("Travel Agency Contact"),
-  contactEmail: z.string().default("contact@agency.com"),
-  contactPhone: z.string().default("+1-555-0123"),
-  emergencyContactName: z.string().optional(),
-  emergencyContactPhone: z.string().optional(),
-  flightSegments: z.array(flightSegmentSchema).optional(),
-  passengers: z.array(passengerSchema).optional(),
-  specialRequests: z.string().optional(),
+  pnr: z.string().optional(),
+  flightSegments: z.array(flightSegmentSchema).min(1).max(6),
+  passengers: z.array(passengerSchema).min(1).max(6),
 });
 
 export const insertFlightBookingSchema = createInsertSchema(flightBookings).omit({
