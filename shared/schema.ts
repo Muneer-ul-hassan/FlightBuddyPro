@@ -44,9 +44,9 @@ export const passengerSchema = z.object({
 });
 
 export const flightBookingSchema = z.object({
-  contactName: z.string().min(1, "Contact name is required"),
-  contactEmail: z.string().email("Valid email is required"),
-  contactPhone: z.string().min(1, "Contact phone is required"),
+  contactName: z.string().default("Travel Agency Contact"),
+  contactEmail: z.string().default("contact@agency.com"),
+  contactPhone: z.string().default("+1-555-0123"),
   emergencyContactName: z.string().optional(),
   emergencyContactPhone: z.string().optional(),
   flightSegments: z.array(flightSegmentSchema).min(1, "At least one flight segment is required").max(6, "Maximum 6 flight segments allowed"),

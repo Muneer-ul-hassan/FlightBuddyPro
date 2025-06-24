@@ -85,7 +85,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 <FormItem>
                   <FormLabel>Departure City *</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Karachi" {...field} />
+                    <Input placeholder="Karachi Jinnah International Airport (KHI)" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,7 +99,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 <FormItem>
                   <FormLabel>Arrival City *</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Doha" {...field} />
+                    <Input placeholder="Doha Hamad International Airport (DOH)" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -173,7 +173,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 <FormItem>
                   <FormLabel>Flight Number *</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. QR605" {...field} />
+                    <Input placeholder="QR605" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,7 +187,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 <FormItem>
                   <FormLabel>Operated By *</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Qatar Airways" {...field} />
+                    <Input placeholder="Qatar Airways" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -110,7 +110,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
                   <FormLabel>Passenger Name (Manual Entry) *</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="UR REHMAN/HABIB" 
+                      placeholder="AHMED/HASSAN Mr." 
                       {...field} 
                       autoComplete="off"
                       spellCheck="false"
@@ -129,7 +129,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
                   <FormLabel>Last Name *</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="Enter last name" 
+                      placeholder="MUHAMMAD" 
                       {...field} 
                       autoComplete="off"
                       spellCheck="false"
@@ -163,7 +163,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
                 <FormItem>
                   <FormLabel>Nationality *</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Pakistani" {...field} />
+                    <Input placeholder="Pakistani" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,7 +183,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
                     <FormControl>
                       <Input 
                         type="number" 
-                        placeholder="2" 
+                        placeholder="1" 
                         min="0"
                         max="10"
                         {...field} 
@@ -202,7 +202,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
                     <FormControl>
                       <Input 
                         type="text" 
-                        placeholder="25kg" 
+                        placeholder="23kg" 
                         {...field} 
                       />
                     </FormControl>

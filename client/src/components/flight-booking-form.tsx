@@ -9,7 +9,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Download, CheckCircle, Loader2 } from "lucide-react";
-import PersonalInfoSection from "./personal-info-redesign";
+
 import FlightSegmentsSection from "./flight-segments-redesign";
 import PassengersSection from "./passengers-redesign";
 import BrandingSection from "./branding-section";
@@ -29,9 +29,9 @@ export default function FlightBookingForm() {
   const form = useForm<FlightBookingForm>({
     resolver: zodResolver(flightBookingSchema),
     defaultValues: {
-      contactName: "",
-      contactEmail: "",
-      contactPhone: "",
+      contactName: "Travel Agency Contact",
+      contactEmail: "contact@agency.com",
+      contactPhone: "+1-555-0123",
       emergencyContactName: "",
       emergencyContactPhone: "",
       flightSegments: [{
@@ -130,7 +130,7 @@ export default function FlightBookingForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <BrandingSection branding={branding} onBrandingChange={setBranding} />
-        <PersonalInfoSection form={form} />
+
         <FlightSegmentsSection form={form} />
         <PassengersSection form={form} />
 
