@@ -5,7 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { flightBookingSchema, type FlightBookingForm } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Form } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Download, CheckCircle, Loader2 } from "lucide-react";
@@ -121,6 +122,28 @@ export default function FlightBookingForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <BrandingSection branding={branding} onBrandingChange={setBranding} />
+        
+        {/* PNR Field */}
+        <Card>
+          <CardContent className="p-6">
+            <FormField
+              control={form.control}
+              name="pnr"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Booking Reference (PNR) *</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Enter booking reference (e.g., ABC123)" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+        </Card>
 
         <FlightSegmentsSection form={form} />
         <PassengersSection form={form} />
