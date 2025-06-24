@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,14 @@ interface BrandingSectionProps {
 
 export default function BrandingSection({ branding, onBrandingChange }: BrandingSectionProps) {
   const [logoFile, setLogoFile] = useState<File | null>(null);
+
+  // Set THE BETTER FARE logo by default when component mounts
+  React.useEffect(() => {
+    if (!branding.logoUrl) {
+      const defaultLogoUrl = "/attached_assets/logo_1750775183525.jpg";
+      onBrandingChange({ ...branding, logoUrl: defaultLogoUrl });
+    }
+  }, []);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -33,12 +42,6 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
     setLogoFile(null);
     onBrandingChange({ ...branding, logoUrl: undefined });
   };
-
-    const useDefaultLogo = () => {
-        // Using THE BETTER FARE company logo
-        const defaultLogoUrl = "/attached_assets/image_1750775045020.png";
-        onBrandingChange({ ...branding, logoUrl: defaultLogoUrl });
-    };
 
   const updateField = (field: keyof BrandingOptions, value: string) => {
     onBrandingChange({ ...branding, [field]: value || undefined });
@@ -75,13 +78,6 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={useDefaultLogo}
-                    className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
-                  >
-                    Use THE BETTER FARE Logo
-                  </button>
                   <input
                     type="file"
                     accept="image/*"
