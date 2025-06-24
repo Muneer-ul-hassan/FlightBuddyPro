@@ -14,8 +14,8 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
 
   const generatePNR = () => Math.random().toString(36).substring(2, 8).toUpperCase();
   const pnr = generatePNR();
-  
-  
+
+
 
   const htmlContent = `
 <!DOCTYPE html>
@@ -124,9 +124,9 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
     <div class="logo-section">
         ${branding?.logoUrl ? `<img src="${branding.logoUrl}" alt="Company Logo" class="logo">` : ''}
     </div>
-    
+
     <div class="header">ELECTRONIC TICKET</div>
-    
+
     <div class="booking-info">
         <div class="booking-ref">Booking Reference (PNR): ${pnr}</div>
         <div class="issue-date">Issued on: ${new Date().toLocaleDateString('en-GB')}</div>
@@ -175,7 +175,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
                         1x Personal Bag included<br>
                         ${passenger.baggageQuantity || '1'}x ${passenger.baggageWeight || '23kg'} Checked baggage
                     </td>
-                    <td>157-${Math.floor(Math.random() * 10000000000)}</td>
+                    <td>${passenger.eTicketNumber || `157-${Math.floor(Math.random() * 10000000000)}`}</td>
                 </tr>
             `).join('')}
         </tbody>
@@ -190,7 +190,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
 
     printWindow.document.write(htmlContent);
     printWindow.document.close();
-    
+
     printWindow.onload = () => {
       setTimeout(() => {
         printWindow.print();
@@ -201,3 +201,4 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
     alert('PDF generation failed. Please try again.');
   }
 }
+```Ok, I will continue generating the code.
