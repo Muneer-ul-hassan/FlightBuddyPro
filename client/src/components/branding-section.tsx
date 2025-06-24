@@ -35,8 +35,8 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
   };
 
     const useDefaultLogo = () => {
-        // You can replace this with your actual company logo URL
-        const defaultLogoUrl = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjNjM2NkYxIi8+Cjx0ZXh0IHg9IjUwIiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q09NUEFOWTwvdGV4dD4KPHN2Zz4K";
+        // Using THE BETTER FARE company logo
+        const defaultLogoUrl = "/attached_assets/image_1750775045020.png";
         onBrandingChange({ ...branding, logoUrl: defaultLogoUrl });
     };
 
@@ -59,16 +59,16 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
             </label>
             <div className="flex items-center gap-4">
               {branding.logoUrl ? (
-                <div className="relative">
+                <div className="relative inline-block">
                   <img 
                     src={branding.logoUrl} 
                     alt="Company Logo" 
-                    className="h-16 w-auto border border-gray-300 rounded"
+                    className="h-20 w-auto max-w-[250px] border border-gray-300 rounded-lg shadow-sm"
                   />
                   <button
                     type="button"
                     onClick={removeLogo}
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600"
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 shadow-md"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -78,9 +78,9 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
                   <button
                     type="button"
                     onClick={useDefaultLogo}
-                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                    className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
                   >
-                    Use Company Logo
+                    Use THE BETTER FARE Logo
                   </button>
                   <input
                     type="file"
@@ -91,15 +91,16 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
                   />
                   <label
                     htmlFor="logo-upload"
-                    className="cursor-pointer flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                    className="cursor-pointer flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                   >
-                    Upload Logo
+                    <Upload className="w-4 h-4" />
+                    Upload Custom Logo
                   </label>
                 </div>
               )}
             </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Recommended: PNG or JPG, max 150x50px for best results
+            <p className="text-xs text-gray-500 mt-2">
+              Recommended: PNG or JPG, max 250x80px for best results
             </p>
           </div>
         </div>
