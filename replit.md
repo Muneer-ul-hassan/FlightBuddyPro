@@ -104,8 +104,11 @@ This is a comprehensive flight booking application built with a modern full-stac
 - Removed payment section completely
 - Removed contact information form section completely
 - Added "1x 7kg Hand baggage, 1x Personal Bag included" as fixed text
-- Added comprehensive international airport dropdown selections for departure/arrival cities
-- Included Pakistani, Middle Eastern, European, American, Asian, and other major airports
+- Added comprehensive international airport functionality with both autocomplete dropdown and manual typing
+- Included Pakistani, Middle Eastern, European, American, Asian, and other major airports (80+ airports)
+- Fixed PDF generation with proper async loading of jsPDF library
+- Airport fields support typing with live autocomplete suggestions
+- Users can select from dropdown or type custom airport names manually
 - Both JavaScript and Python versions updated with new design
 
 ## Changelog
