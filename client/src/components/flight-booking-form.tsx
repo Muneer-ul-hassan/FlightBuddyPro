@@ -12,23 +12,21 @@ import { Download, CheckCircle, Loader2 } from "lucide-react";
 
 import FlightSegmentsSection from "./flight-segments-redesign";
 import PassengersSection from "./passengers-redesign";
-import BrandingSection from "./branding-section";
+import PersonalInfoSection from "./personal-info-redesign";
 import { generateWorkingPDF } from "@/lib/clean-pdf";
-
-interface BrandingOptions {
-  logoUrl?: string;
-}
 
 export default function FlightBookingForm() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [branding, setBranding] = useState<BrandingOptions>({
-    logoUrl: "/attached_assets/logo-768x223_1750261607455.png"
-  });
   const { toast } = useToast();
 
   const form = useForm<FlightBookingForm>({
     resolver: zodResolver(flightBookingSchema),
     defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      paymentMethod: "",
+      consentGiven: false,
       contactName: "Travel Agency Contact",
       contactEmail: "contact@agency.com",
       contactPhone: "+1-555-0123",
@@ -100,10 +98,10 @@ export default function FlightBookingForm() {
     setIsGeneratingPDF(true);
     try {
       const formData = form.getValues();
-      generateWorkingPDF(formData, branding);
+      generateWorkingPDF(formData, {});
       toast({
         title: "E-Ticket Generated Successfully!",
-        description: "Your professional e-ticket with branding is ready to print or save.",
+        description: "Your professional e-ticket is ready to print or save.",
       });
     } catch (error) {
       console.error('PDF generation error:', error);
@@ -120,8 +118,7 @@ export default function FlightBookingForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <BrandingSection branding={branding} onBrandingChange={setBranding} />
-
+        <PersonalInfoSection form={form} />
         <FlightSegmentsSection form={form} />
         <PassengersSection form={form} />
 
@@ -129,25 +126,39 @@ export default function FlightBookingForm() {
 
 
 
-        {/* Generate E-Ticket Section */}
+        {/* Submit Booking Section */}
         <Card>
           <CardContent className="p-6">
-            <div className="text-center">
+            <div className="text-center space-y-4">
+              <Button
+                type="submit"
+                disabled={submitBookingMutation.isPending}
+                className="w-full sm:w-auto px-8 py-4 bg-green-600 text-white hover:bg-green-700 text-lg font-semibold"
+              >
+                {submitBookingMutation.isPending ? (
+                  <Loader2 className="w-6 h-6 mr-3 animate-spin" />
+                ) : (
+                  <CheckCircle className="w-6 h-6 mr-3" />
+                )}
+                {submitBookingMutation.isPending ? "Submitting Booking..." : "Submit Booking"}
+              </Button>
+              
               <Button
                 type="button"
                 onClick={handleGeneratePDF}
                 disabled={isGeneratingPDF}
-                className="w-full sm:w-auto px-8 py-4 bg-airline-blue text-white hover:bg-airline-dark text-lg font-semibold"
+                className="w-full sm:w-auto px-8 py-4 bg-airline-blue text-white hover:bg-airline-dark text-lg font-semibold ml-4"
               >
                 {isGeneratingPDF ? (
                   <Loader2 className="w-6 h-6 mr-3 animate-spin" />
                 ) : (
                   <Download className="w-6 h-6 mr-3" />
                 )}
-                {isGeneratingPDF ? "Generating E-Ticket..." : "Generate Professional E-Ticket"}
+                {isGeneratingPDF ? "Generating E-Ticket..." : "Generate E-Ticket"}
               </Button>
+              
               <p className="text-sm text-gray-500 mt-3">
-                Creates a professional airline-style e-ticket PDF for your client
+                Submit your booking first, then generate the e-ticket PDF
               </p>
             </div>
           </CardContent>
