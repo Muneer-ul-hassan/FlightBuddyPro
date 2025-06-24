@@ -22,8 +22,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
           title: "",
           firstName: "",
           lastName: "",
-          dateOfBirth: "",
-          nationality: "",
+          eTicketNumber: "",
           passportNumber: "",
           passportExpiry: "",
           baggageQuantity: "1",
@@ -141,7 +140,26 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
             />
           </div>
           
-          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FormField
+              control={form.control}
+              name={`passengers.${index}.eTicketNumber`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-Ticket Number</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="e.g., 157-2389127987" 
+                      {...field} 
+                      autoComplete="off"
+                      spellCheck="false"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           
           {/* Baggage Information */}
           <div className="mt-6">
