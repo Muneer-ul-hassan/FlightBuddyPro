@@ -23,7 +23,7 @@ interface BrandingOptions {
 export default function FlightBookingForm() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [branding, setBranding] = useState<BrandingOptions>({
-    logoUrl: "/attached_assets/logo-768x223_1750261607455.png"
+    logoUrl: "/attached_assets/logo_1750774559281.jpg"
   });
   const { toast } = useToast();
 
@@ -122,7 +122,7 @@ export default function FlightBookingForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <BrandingSection branding={branding} onBrandingChange={setBranding} />
-        
+
         {/* PNR Field */}
         <Card>
           <CardContent className="p-6">
