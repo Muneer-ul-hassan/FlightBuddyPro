@@ -34,6 +34,11 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
     onBrandingChange({ ...branding, logoUrl: undefined });
   };
 
+    const useDefaultLogo = () => {
+        const defaultLogoUrl = "/company-logo.png";
+        onBrandingChange({ ...branding, logoUrl: defaultLogoUrl });
+    };
+
   const updateField = (field: keyof BrandingOptions, value: string) => {
     onBrandingChange({ ...branding, [field]: value || undefined });
   };
@@ -45,7 +50,7 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
           <Building2 className="w-5 h-5 mr-2 text-purple-600" />
           Company Logo Upload
         </h2>
-        
+
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -68,7 +73,14 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={useDefaultLogo}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                  >
+                    Use Company Logo
+                  </button>
                   <input
                     type="file"
                     accept="image/*"
@@ -80,7 +92,6 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
                     htmlFor="logo-upload"
                     className="cursor-pointer flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                   >
-                    <Upload className="w-4 h-4" />
                     Upload Logo
                   </label>
                 </div>
