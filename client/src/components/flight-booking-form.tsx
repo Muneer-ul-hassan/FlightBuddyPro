@@ -9,25 +9,19 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Download, CheckCircle, Loader2 } from "lucide-react";
-import PersonalInfoSection from "./personal-info-section";
-import FlightSegmentsSection from "./flight-segments-section";
-import PassengersSection from "./passengers-section";
+import PersonalInfoSection from "./personal-info-redesign";
+import FlightSegmentsSection from "./flight-segments-redesign";
+import PassengersSection from "./passengers-redesign";
 import BrandingSection from "./branding-section";
-import { generateWorkingPDF } from "@/lib/working-pdf";
+import { generateWorkingPDF } from "@/lib/clean-pdf";
 
 interface BrandingOptions {
   logoUrl?: string;
-  companyName?: string;
-  companyAddress?: string;
-  companyPhone?: string;
-  companyEmail?: string;
 }
 
 export default function FlightBookingForm() {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [branding, setBranding] = useState<BrandingOptions>({
-    companyName: "THE BETTER FARE",
-    companyAddress: "Atypical Agency",
     logoUrl: "/attached_assets/logo-768x223_1750261607455.png"
   });
   const { toast } = useToast();
@@ -35,31 +29,37 @@ export default function FlightBookingForm() {
   const form = useForm<FlightBookingForm>({
     resolver: zodResolver(flightBookingSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      phone: "",
-      flightSegmentCount: 1,
-      flightSegments: [
-        {
-          flightNumber: "",
-          airline: "",
-          from: "",
-          to: "",
-          date: "",
-          departureTime: "",
-          arrivalTime: "",
-        },
-      ],
-      passengerCount: 1,
-      passengers: [
-        {
-          name: "",
-          eTicketNumber: "",
-          baggage: [],
-        },
-      ],
-      paymentMethod: undefined,
-      consentGiven: false,
+      contactName: "",
+      contactEmail: "",
+      contactPhone: "",
+      emergencyContactName: "",
+      emergencyContactPhone: "",
+      flightSegments: [{
+        departureCity: "",
+        arrivalCity: "",
+        departureDate: "",
+        departureTime: "",
+        arrivalDate: "",
+        arrivalTime: "",
+        flightNumber: "",
+        airline: "",
+        aircraftType: "",
+        seatClass: "",
+        fareBasis: "",
+      }],
+      passengers: [{
+        title: "",
+        firstName: "",
+        lastName: "",
+        dateOfBirth: "",
+        nationality: "",
+        passportNumber: "",
+        passportExpiry: "",
+        baggageQuantity: "1",
+        baggageWeight: "23kg",
+        mealPreference: "",
+      }],
+      specialRequests: "",
     },
   });
 

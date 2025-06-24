@@ -95,11 +95,15 @@ This is a comprehensive flight booking application built with a modern full-stac
 
 ## Recent Changes
 
-### June 18, 2025
-- Initial flight booking form setup with dynamic segments and passengers
-- Professional PDF generation matching airline e-ticket format
-- Company branding system with logo upload and contact information
-- HTML-based PDF generation for reliable cross-platform compatibility
+### June 24, 2025
+- Redesigned PDF layout to match structured airline e-ticket format
+- Removed company name/address/phone/email fields - logo upload only
+- Updated flight segments to use structured boxes with manual fillable fields
+- Changed passenger names to manual entry (no auto-suggestions)
+- Replaced baggage checkboxes with quantity/weight input fields
+- Removed payment section completely
+- Added "1x 7kg Hand baggage, 1x Personal Bag included" as fixed text
+- Both JavaScript and Python versions updated with new design
 
 ## Changelog
 ```
@@ -111,4 +115,7 @@ Changelog:
 ## User Preferences
 ```
 Preferred communication style: Simple, everyday language.
+Language: Urdu/English mix for explanations
+Prefers Python alternatives when available
+Wants separate folders for different implementations
 ```

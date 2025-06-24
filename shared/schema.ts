@@ -31,21 +31,27 @@ export const flightSegmentSchema = z.object({
 });
 
 export const passengerSchema = z.object({
-  name: z.string().min(1, "Passenger name is required"),
-  eTicketNumber: z.string().min(1, "E-ticket number is required"),
-  baggage: z.array(z.enum(["personal", "carry", "checked"])).default([]),
+  title: z.string().min(1, "Title is required"),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  nationality: z.string().min(1, "Nationality is required"),
+  passportNumber: z.string().optional(),
+  passportExpiry: z.string().optional(),
+  baggageQuantity: z.string().optional(),
+  baggageWeight: z.string().optional(),
+  mealPreference: z.string().optional(),
 });
 
 export const flightBookingSchema = z.object({
-  fullName: z.string().min(1, "Full name is required"),
-  email: z.string().email("Valid email is required"),
-  phone: z.string().min(1, "Phone number is required"),
-  flightSegmentCount: z.number().min(1).max(6),
-  flightSegments: z.array(flightSegmentSchema).min(1).max(6),
-  passengerCount: z.number().min(1).max(6),
-  passengers: z.array(passengerSchema).min(1).max(6),
-  paymentMethod: z.enum(["stripe", "paypal"]).optional(),
-  consentGiven: z.boolean().refine(val => val === true, "You must agree to the terms and conditions"),
+  contactName: z.string().min(1, "Contact name is required"),
+  contactEmail: z.string().email("Valid email is required"),
+  contactPhone: z.string().min(1, "Contact phone is required"),
+  emergencyContactName: z.string().optional(),
+  emergencyContactPhone: z.string().optional(),
+  flightSegments: z.array(flightSegmentSchema).min(1, "At least one flight segment is required").max(6, "Maximum 6 flight segments allowed"),
+  passengers: z.array(passengerSchema).min(1, "At least one passenger is required").max(6, "Maximum 6 passengers allowed"),
+  specialRequests: z.string().optional(),
 });
 
 export const insertFlightBookingSchema = createInsertSchema(flightBookings).omit({
