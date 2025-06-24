@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Download, CheckCircle, Loader2 } from "lucide-react";
 
-import FlightSegmentsSection from "./flight-segments-redesign";
+import FlightSegmentsSection from "./flight-segments-fixed";
 import PassengersSection from "./passengers-redesign";
 import BrandingSection from "./branding-section";
 import { generateWorkingPDF } from "@/lib/clean-pdf";
