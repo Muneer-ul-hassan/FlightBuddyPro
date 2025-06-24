@@ -141,35 +141,7 @@ export default function PassengersSection({ form }: PassengersSectionProps) {
             />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FormField
-              control={form.control}
-              name={`passengers.${index}.dateOfBirth`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name={`passengers.${index}.nationality`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nationality</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Pakistani" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          
           
           {/* Baggage Information */}
           <div className="mt-6">
