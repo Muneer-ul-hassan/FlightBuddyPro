@@ -40,6 +40,10 @@ export const passengerSchema = z.object({
   passportExpiry: z.string().optional(),
   baggageQuantity: z.string().optional(),
   baggageWeight: z.string().optional(),
+  handBaggageQuantity: z.string().optional(),
+  handBaggageWeight: z.string().optional(),
+  personalBagQuantity: z.string().optional(),
+  personalBagWeight: z.string().optional(),
   mealPreference: z.string().optional(),
 });
 
