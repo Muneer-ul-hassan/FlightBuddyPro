@@ -41,7 +41,8 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
   return (
     <Card>
       <CardContent className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+          <Building2 className="w-5 h-5 mr-2 text-purple-600" />
           Company Logo Upload
         </h2>
         
@@ -79,6 +80,7 @@ export default function BrandingSection({ branding, onBrandingChange }: Branding
                     htmlFor="logo-upload"
                     className="cursor-pointer flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                   >
+                    <Upload className="w-4 h-4" />
                     Upload Logo
                   </label>
                 </div>
