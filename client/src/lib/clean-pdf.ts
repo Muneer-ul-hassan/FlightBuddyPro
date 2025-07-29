@@ -12,12 +12,10 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
       return;
     }
 
-  const generatePNR = () => Math.random().toString(36).substring(2, 8).toUpperCase();
-  const pnr = generatePNR();
+    // Use user-provided PNR, fallback to 'NO-PNR' if not provided
+    const pnr = formData.pnr && formData.pnr.trim() ? formData.pnr.trim().toUpperCase() : 'NO-PNR';
 
-
-
-  const htmlContent = `
+    const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -132,31 +130,44 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
         <div class="issue-date">Issued on: ${new Date().toLocaleDateString('en-GB')}</div>
     </div>
 
-    ${formData.flightSegments.map((segment, index) => `
+    ${formData.flightSegments.map((segment: any, index: number) => {
+      // Use both backend and frontend field names for compatibility (bracket notation, TS any)
+      const depCity = segment['departureCity'] || segment['from'] || '';
+      const arrCity = segment['arrivalCity'] || segment['to'] || '';
+      const depDateStr = segment['departureDate'] || segment['date'] || '';
+      const arrDateStr = segment['arrivalDate'] || segment['date'] || '';
+      const depDateObj = depDateStr ? new Date(depDateStr) : null;
+      const arrDateObj = arrDateStr ? new Date(arrDateStr) : null;
+      const depDay = depDateObj ? depDateObj.getDate().toString().padStart(2, '0') : '';
+      const depMonth = depDateObj ? depDateObj.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase() : '';
+      const arrDay = arrDateObj ? arrDateObj.getDate().toString().padStart(2, '0') : '';
+      const arrMonth = arrDateObj ? arrDateObj.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase() : '';
+      return `
         <div class="flight-segment">
             <div class="segment-header">
-                ${segment.departureCity} – ${segment.arrivalCity}
+                ${depCity} – ${arrCity}
             </div>
             <table class="segment-table">
                 <tr>
                     <td class="label">Flight</td>
-                    <td>${segment.flightNumber}</td>
+                    <td>${segment['flightNumber'] || ''}</td>
                 </tr>
                 <tr>
                     <td class="label">Operated By</td>
-                    <td>${segment.airline}</td>
+                    <td>${segment['airline'] || ''}</td>
                 </tr>
                 <tr>
                     <td class="label">Departure</td>
-                    <td>${segment.departureDate.split('-')[2]} ${new Date(segment.departureDate).toLocaleDateString('en-GB', { month: 'short' }).toUpperCase()} &nbsp;&nbsp;&nbsp; ${segment.departureTime} &nbsp;&nbsp;&nbsp; ${segment.departureCity}</td>
+                    <td>${depDay} ${depMonth} &nbsp;&nbsp;&nbsp; ${segment['departureTime'] || ''} &nbsp;&nbsp;&nbsp; ${depCity}</td>
                 </tr>
                 <tr>
                     <td class="label">Arrival</td>
-                    <td>${segment.arrivalDate.split('-')[2]} ${new Date(segment.arrivalDate).toLocaleDateString('en-GB', { month: 'short' }).toUpperCase()} &nbsp;&nbsp;&nbsp; ${segment.arrivalTime} &nbsp;&nbsp;&nbsp; ${segment.arrivalCity}</td>
+                    <td>${arrDay} ${arrMonth} &nbsp;&nbsp;&nbsp; ${segment['arrivalTime'] || ''} &nbsp;&nbsp;&nbsp; ${arrCity}</td>
                 </tr>
             </table>
         </div>
-    `).join('')}
+      `;
+    }).join('')}
 
     <table class="passenger-table">
         <thead>
@@ -167,17 +178,52 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
             </tr>
         </thead>
         <tbody>
-            ${formData.passengers.map((passenger, index) => `
+            ${formData.passengers.map((passenger: any, index: number) => {
+              // Use both backend and frontend field names for compatibility (bracket notation, TS any)
+              const lastName = (passenger['lastName'] || (passenger['fullName'] ? passenger['fullName'].split(' ').slice(-1)[0] : '') || '').toUpperCase();
+              const givenName = (passenger['firstName'] || (passenger['fullName'] ? passenger['fullName'].split(' ').slice(0, -1).join(' ') : '') || '').toUpperCase();
+              const title = passenger['title'] ? ` ${passenger['title']}.` : '';
+              const nameFormatted = lastName && givenName ? `${lastName} / ${givenName}${title}` : givenName || lastName;
+              // Only show baggage type if quantity > 0, skip if 0 or blank
+              const getBagVal = (val: any) => {
+                if (val === undefined || val === null) return '';
+                if (typeof val === 'string') return val.trim();
+                return val;
+              };
+              // Checked Baggage
+              const checkedQty = getBagVal(passenger['baggageQuantity'] ?? passenger['checked23kg'] ?? passenger['checked'] ?? passenger['checkedBag'] ?? passenger['checkedBaggageQuantity']);
+              const checkedWgt = getBagVal(passenger['baggageWeight'] ?? passenger['checked23kgWeight'] ?? passenger['checkedWeight'] ?? passenger['checkedBagWeight'] ?? passenger['checkedBaggageWeight']);
+              // Hand Baggage
+              const handQty = getBagVal(passenger['handBaggageQuantity'] ?? passenger['handCarry'] ?? passenger['cabin7kg'] ?? passenger['cabin'] ?? passenger['cabinBag'] ?? passenger['handQuantity']);
+              const handWgt = getBagVal(passenger['handBaggageWeight'] ?? passenger['handCarryWeight'] ?? passenger['cabin7kgWeight'] ?? passenger['cabinWeight'] ?? passenger['cabinBagWeight'] ?? passenger['handWeight']);
+              // Personal Bag
+              const personalQty = getBagVal(passenger['personalBagQuantity'] ?? passenger['smallBag'] ?? passenger['small'] ?? passenger['personalQuantity']);
+              const personalWgt = getBagVal(passenger['personalBagWeight'] ?? passenger['smallBagWeight'] ?? passenger['smallWeight'] ?? passenger['personalWeight']);
+              // Always keep the order: Personal Bag, Hand Baggage, Checked Baggage
+              let baggageInfoArr: string[] = [];
+              // Personal Bag
+              if (personalQty && !isNaN(Number(personalQty)) && Number(personalQty) > 0) {
+                baggageInfoArr.push(`${personalQty} x ${personalWgt || ''} Personal Bag`.trim());
+              }
+              // Hand Baggage
+              if (handQty && !isNaN(Number(handQty)) && Number(handQty) > 0) {
+                baggageInfoArr.push(`${handQty} x ${handWgt || ''} Hand Baggage`.trim());
+              }
+              // Checked Baggage
+              if (checkedQty && !isNaN(Number(checkedQty)) && Number(checkedQty) > 0) {
+                baggageInfoArr.push(`${checkedQty} x ${checkedWgt || ''} Checked`.trim());
+              }
+              let baggageInfo = baggageInfoArr.join('<br>');
+              return `
                 <tr>
-                    <td>${passenger.firstName.toUpperCase()}/${passenger.lastName.toUpperCase()} ${passenger.title}.</td>
+                    <td>${nameFormatted}</td>
                     <td class="baggage-info">
-                        1x 7kg Hand baggage<br>
-                        1x Personal Bag included<br>
-                        ${passenger.baggageQuantity || '1'}x ${passenger.baggageWeight || '23kg'} Checked baggage
+                        ${baggageInfo}
                     </td>
-                    <td>${passenger.eTicketNumber || `157-${Math.floor(Math.random() * 10000000000)}`}</td>
+                    <td>${passenger['eTicketNumber'] || ''}</td>
                 </tr>
-            `).join('')}
+              `;
+            }).join('')}
         </tbody>
     </table>
 

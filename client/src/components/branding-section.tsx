@@ -17,13 +17,7 @@ interface BrandingSectionProps {
 export default function BrandingSection({ branding, onBrandingChange }: BrandingSectionProps) {
   const [logoFile, setLogoFile] = useState<File | null>(null);
 
-  // Set THE BETTER FARE logo by default when component mounts
-  React.useEffect(() => {
-    if (!branding.logoUrl) {
-      const defaultLogoUrl = "/attached_assets/logo_1750775183525.jpg";
-      onBrandingChange({ ...branding, logoUrl: defaultLogoUrl });
-    }
-  }, []);
+  // Do not set a default logo on mount; only show upload button initially
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

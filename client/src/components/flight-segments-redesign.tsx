@@ -111,25 +111,29 @@ const internationalAirports = [
 const AirportInput = ({ value, onChange, placeholder }: { value: string; onChange: (value: string) => void; placeholder: string }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredAirports, setFilteredAirports] = useState<string[]>([]);
+  const [isCustom, setIsCustom] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     onChange(inputValue);
-    
     if (inputValue.length > 0) {
       const filtered = internationalAirports.filter(airport =>
         airport.toLowerCase().includes(inputValue.toLowerCase())
       );
       setFilteredAirports(filtered);
       setShowSuggestions(true);
+      setIsCustom(filtered.length === 0);
     } else {
       setShowSuggestions(false);
+      setIsCustom(false);
     }
   };
 
-  const handleSuggestionClick = (airport: string) => {
+  // Use onMouseDown instead of onClick to avoid losing focus before click
+  const handleSuggestionSelect = (airport: string) => {
     onChange(airport);
     setShowSuggestions(false);
+    setIsCustom(false);
   };
 
   return (
@@ -145,10 +149,10 @@ const AirportInput = ({ value, onChange, placeholder }: { value: string; onChang
             );
             setFilteredAirports(filtered);
             setShowSuggestions(true);
+            setIsCustom(filtered.length === 0);
           }
         }}
         onBlur={() => {
-          // Delay hiding suggestions to allow clicks
           setTimeout(() => setShowSuggestions(false), 200);
         }}
       />
@@ -158,12 +162,15 @@ const AirportInput = ({ value, onChange, placeholder }: { value: string; onChang
             <div
               key={index}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-              onClick={() => handleSuggestionClick(airport)}
+              onMouseDown={() => handleSuggestionSelect(airport)}
             >
               {airport}
             </div>
           ))}
         </div>
+      )}
+      {isCustom && value && (
+        <div className="mt-1 text-xs text-blue-600">Custom location: {value}</div>
       )}
     </div>
   );
@@ -178,17 +185,13 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
       setValue("flightSegments", [
         ...flightSegments,
         {
-          departureCity: "",
-          arrivalCity: "",
-          departureDate: "",
+          from: "",
+          to: "",
+          date: "",
           departureTime: "",
-          arrivalDate: "",
           arrivalTime: "",
           flightNumber: "",
           airline: "",
-          aircraftType: "",
-          seatClass: "",
-          fareBasis: "",
         },
       ]);
     }
@@ -239,13 +242,13 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <FormField
               control={form.control}
-              name={`flightSegments.${index}.departureCity`}
+              name={`flightSegments.${index}.from`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Departure City</FormLabel>
                   <FormControl>
                     <AirportInput 
-                      value={field.value} 
+                      value={typeof field.value === 'string' ? field.value : ''} 
                       onChange={field.onChange} 
                       placeholder="Karachi Jinnah International Airport (KHI)" 
                     />
@@ -257,13 +260,13 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
 
             <FormField
               control={form.control}
-              name={`flightSegments.${index}.arrivalCity`}
+              name={`flightSegments.${index}.to`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Arrival City</FormLabel>
                   <FormControl>
                     <AirportInput 
-                      value={field.value} 
+                      value={typeof field.value === 'string' ? field.value : ''} 
                       onChange={field.onChange} 
                       placeholder="Doha Hamad International Airport (DOH)" 
                     />
@@ -277,18 +280,17 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             <FormField
               control={form.control}
-              name={`flightSegments.${index}.departureDate`}
+              name={`flightSegments.${index}.date`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Departure Date</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type="date" value={typeof field.value === 'string' ? field.value : ''} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name={`flightSegments.${index}.departureTime`}
@@ -296,27 +298,25 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 <FormItem>
                   <FormLabel>Departure Time</FormLabel>
                   <FormControl>
-                    <Input type="time" {...field} />
+                    <Input type="time" value={typeof field.value === 'string' ? field.value : ''} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
-              name={`flightSegments.${index}.arrivalDate`}
+              name={`flightSegments.${index}.date`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Arrival Date</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type="date" value={typeof field.value === 'string' ? field.value : ''} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name={`flightSegments.${index}.arrivalTime`}
@@ -324,7 +324,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 <FormItem>
                   <FormLabel>Arrival Time</FormLabel>
                   <FormControl>
-                    <Input type="time" {...field} />
+                    <Input type="time" value={typeof field.value === 'string' ? field.value : ''} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -332,7 +332,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
             />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name={`flightSegments.${index}.flightNumber`}
@@ -346,7 +346,6 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name={`flightSegments.${index}.airline`}
@@ -356,30 +355,6 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                   <FormControl>
                     <Input placeholder="Qatar Airways" {...field} />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name={`flightSegments.${index}.seatClass`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Class *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select class" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Economy">Economy</SelectItem>
-                      <SelectItem value="Premium Economy">Premium Economy</SelectItem>
-                      <SelectItem value="Business">Business</SelectItem>
-                      <SelectItem value="First">First</SelectItem>
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
