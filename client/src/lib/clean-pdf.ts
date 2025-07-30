@@ -75,7 +75,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
             border-collapse: collapse;
         }
         .segment-table td {
-            padding: 8px 12px;
+            padding: 16px 20px;
             border-bottom: 1px solid #ddd;
             vertical-align: top;
         }
@@ -140,8 +140,10 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
       const arrDateObj = arrDateStr ? new Date(arrDateStr) : null;
       const depDay = depDateObj ? depDateObj.getDate().toString().padStart(2, '0') : '';
       const depMonth = depDateObj ? depDateObj.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase() : '';
+      const depWeekDay = depDateObj ? depDateObj.toLocaleDateString('en-GB', { weekday: 'long' }).toUpperCase() : '';
       const arrDay = arrDateObj ? arrDateObj.getDate().toString().padStart(2, '0') : '';
       const arrMonth = arrDateObj ? arrDateObj.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase() : '';
+      const arrWeekDay = arrDateObj ? arrDateObj.toLocaleDateString('en-GB', { weekday: 'long' }).toUpperCase() : '';
       return `
         <div class="flight-segment">
             <div class="segment-header">
@@ -158,11 +160,11 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
                 </tr>
                 <tr>
                     <td class="label">Departure</td>
-                    <td>${depDay} ${depMonth} &nbsp;&nbsp;&nbsp; ${segment['departureTime'] || ''} &nbsp;&nbsp;&nbsp; ${depCity}</td>
+                    <td>${depWeekDay}, ${depDay} ${depMonth} &nbsp;&nbsp;&nbsp; ${segment['departureTime'] || ''} &nbsp;&nbsp;&nbsp; ${depCity}</td>
                 </tr>
                 <tr>
                     <td class="label">Arrival</td>
-                    <td>${arrDay} ${arrMonth} &nbsp;&nbsp;&nbsp; ${segment['arrivalTime'] || ''} &nbsp;&nbsp;&nbsp; ${arrCity}</td>
+                    <td>${arrWeekDay}, ${arrDay} ${arrMonth} &nbsp;&nbsp;&nbsp; ${segment['arrivalTime'] || ''} &nbsp;&nbsp;&nbsp; ${arrCity}</td>
                 </tr>
             </table>
         </div>
@@ -203,7 +205,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
               let baggageInfoArr: string[] = [];
               // Personal Bag
               if (personalQty && !isNaN(Number(personalQty)) && Number(personalQty) > 0) {
-                baggageInfoArr.push(`${personalQty} x ${personalWgt || ''} Personal Bag`.trim());
+                baggageInfoArr.push(`${personalQty} x ${personalWgt || ''} Personal Baggage`.trim());
               }
               // Hand Baggage
               if (handQty && !isNaN(Number(handQty)) && Number(handQty) > 0) {
@@ -211,7 +213,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
               }
               // Checked Baggage
               if (checkedQty && !isNaN(Number(checkedQty)) && Number(checkedQty) > 0) {
-                baggageInfoArr.push(`${checkedQty} x ${checkedWgt || ''} Checked`.trim());
+                baggageInfoArr.push(`${checkedQty} x ${checkedWgt || ''} Checked Baggage`.trim());
               }
               let baggageInfo = baggageInfoArr.join('<br>');
               return `
