@@ -34,8 +34,8 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
             min-height: 60px;
         }
         .logo {
-            max-height: 40px;
-            max-width: 200px;
+            max-height: 120px;
+            max-width: 270px;
             object-fit: contain;
         }
         .header { 
