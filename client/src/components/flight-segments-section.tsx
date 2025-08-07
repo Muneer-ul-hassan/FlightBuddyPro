@@ -24,6 +24,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
         from: "",
         to: "",
         date: "",
+        arrivalDate: "",
         departureTime: "",
         arrivalTime: "",
       };
@@ -154,7 +155,26 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Date <span className="text-red-500">*</span>
+                        Departure Date <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="date"
+                          className="focus:ring-2 focus:ring-airline-blue focus:border-transparent"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`flightSegments.${index}.arrivalDate`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Arrival Date <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input
