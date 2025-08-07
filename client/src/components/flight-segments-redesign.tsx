@@ -306,7 +306,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
             />
             <FormField
               control={form.control}
-              name={`flightSegments.${index}.date`}
+              name={`flightSegments.${index}.arrivalDate`}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Arrival Date</FormLabel>
