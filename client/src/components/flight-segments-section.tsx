@@ -125,7 +125,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Ticket Type <span className="text-red-500">*</span>
+                        Ticket Class <span className="text-red-500">*</span>
                       </FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>

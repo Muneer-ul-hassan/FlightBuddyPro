@@ -134,10 +134,10 @@ export default function PDFGenerator({ formData, isFormValid, onValidate }: PDFG
         // Flight details in a structured format
         yPos = addText(`Flight: ${segment.flightNumber} - ${segment.airline}`, margin + 10, yPos, 12);
         
-        // Add ticket type
+        // Add ticket class
         const ticketTypeDisplay = segment.ticketType ? 
-          `Ticket Type: ${segment.ticketType.charAt(0).toUpperCase() + segment.ticketType.slice(1)}` : 
-          'Ticket Type: Economy';
+          `Ticket Class: ${segment.ticketType.charAt(0).toUpperCase() + segment.ticketType.slice(1)}` : 
+          'Ticket Class: Economy';
         yPos = addText(ticketTypeDisplay, margin + 10, yPos, 12, 'bold');
         
         yPos = addText(`Route: ${segment.from} → ${segment.to}`, margin + 10, yPos, 12);
