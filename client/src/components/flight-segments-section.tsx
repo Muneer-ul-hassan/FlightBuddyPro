@@ -4,6 +4,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Plane } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface FlightSegmentsSectionProps {
   form: UseFormReturn<FlightBookingForm>;
@@ -14,7 +21,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
 
   const updateSegmentCount = (count: number) => {
     form.setValue("flightSegmentCount", count);
-    
+
     // Update the flight segments array
     const currentSegments = form.getValues("flightSegments");
     const newSegments = Array.from({ length: count }, (_, index) => {
@@ -27,6 +34,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
         arrivalDate: "",
         departureTime: "",
         arrivalTime: "",
+        ticketType: "", // Initialize ticketType
       };
     });
     form.setValue("flightSegments", newSegments);
@@ -39,7 +47,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
           <Plane className="w-5 h-5 mr-2 text-airline-blue" />
           Flight Information
         </h2>
-        
+
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-4">
             How many flight segments? <span className="text-red-500">*</span>
@@ -72,7 +80,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 </span>
                 Flight Segment {index + 1}
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
                   name={`flightSegments.${index}.flightNumber`}
@@ -98,7 +106,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Operated By (Airline) <span className="text-red-500">*</span>
+                        Airline <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -113,114 +121,24 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                 />
                 <FormField
                   control={form.control}
-                  name={`flightSegments.${index}.from`}
+                  name={`flightSegments.${index}.ticketType`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        From <span className="text-red-500">*</span>
+                        Ticket Type <span className="text-red-500">*</span>
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="e.g., DOH"
-                          className="focus:ring-2 focus:ring-airline-blue focus:border-transparent"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`flightSegments.${index}.to`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        To <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="e.g., JFK"
-                          className="focus:ring-2 focus:ring-airline-blue focus:border-transparent"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`flightSegments.${index}.date`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Departure Date <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="date"
-                          className="focus:ring-2 focus:ring-airline-blue focus:border-transparent"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`flightSegments.${index}.arrivalDate`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Arrival Date <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="date"
-                          className="focus:ring-2 focus:ring-airline-blue focus:border-transparent"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`flightSegments.${index}.departureTime`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Departure Time <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="time"
-                          className="focus:ring-2 focus:ring-airline-blue focus:border-transparent"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`flightSegments.${index}.arrivalTime`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Arrival Time <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="time"
-                          className="focus:ring-2 focus:ring-airline-blue focus:border-transparent"
-                        />
-                      </FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="focus:ring-2 focus:ring-airline-blue focus:border-transparent">
+                            <SelectValue placeholder="Select class" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="economy">Economy</SelectItem>
+                          <SelectItem value="business">Business</SelectItem>
+                          <SelectItem value="first">First</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

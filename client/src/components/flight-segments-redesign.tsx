@@ -188,10 +188,12 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
           from: "",
           to: "",
           date: "",
+          arrivalDate: "",
           departureTime: "",
           arrivalTime: "",
           flightNumber: "",
           airline: "",
+          ticketType: "",
         },
       ]);
     }
@@ -332,7 +334,7 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
             />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormField
               control={form.control}
               name={`flightSegments.${index}.flightNumber`}
@@ -355,6 +357,28 @@ export default function FlightSegmentsSection({ form }: FlightSegmentsSectionPro
                   <FormControl>
                     <Input placeholder="Qatar Airways" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={`flightSegments.${index}.ticketType`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ticket Type</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select class" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="economy">Economy</SelectItem>
+                      <SelectItem value="business">Business</SelectItem>
+                      <SelectItem value="first">First</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

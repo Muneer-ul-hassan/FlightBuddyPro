@@ -159,6 +159,10 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
                     <td>${segment['airline'] || ''}</td>
                 </tr>
                 <tr>
+                    <td class="label">Ticket Type</td>
+                    <td>${segment['ticketType'] ? segment['ticketType'].charAt(0).toUpperCase() + segment['ticketType'].slice(1) : 'Economy'}</td>
+                </tr>
+                <tr>
                     <td class="label">Departure</td>
                     <td>${depWeekDay}, ${depDay} ${depMonth} &nbsp;&nbsp;&nbsp; ${segment['departureTime'] || ''} &nbsp;&nbsp;&nbsp; ${depCity}</td>
                 </tr>

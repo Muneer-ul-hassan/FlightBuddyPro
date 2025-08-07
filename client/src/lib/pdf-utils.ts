@@ -140,6 +140,12 @@ export async function generatePDF(formData: FlightBookingForm): Promise<void> {
       doc.rect(margin, yPos - 5, pageWidth - (margin * 2), 60);
       yPos = addText(`Flight ${segment.flightNumber}`, margin + 5, yPos + 10, 14, 'bold');
       yPos = addText(`Operated By ${segment.airline}`, margin + 5, yPos, 12);
+      
+      // Add ticket type
+      const ticketTypeDisplay = segment.ticketType ? 
+        `Ticket Type: ${segment.ticketType.charAt(0).toUpperCase() + segment.ticketType.slice(1)}` : 
+        'Ticket Type: Economy';
+      yPos = addText(ticketTypeDisplay, margin + 5, yPos, 12, 'bold');
       yPos += 10;
       const formattedDate = formatDate(segment.date);
       yPos = addText(`Departure ${formattedDate} ${segment.departureTime} ${segment.from} Airport`, margin + 5, yPos, 12);
