@@ -1,17 +1,41 @@
+modules = ["nodejs-20", "web", "postgresql-16", "python-3.11"]
 run = "npm run dev"
-language = "nodejs"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
-run = "npm run dev"
-language = "nodejs"
+[nix]
+channel = "stable-24_05"
+packages = ["freetype", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "zlib"]
 
-[interpreter]
-entrypoint = "server/index.ts"
+[deployment]
+deploymentTarget = "autoscale"
+build = ["npm", "run", "build"]
+run = ["npm", "run", "start"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 8000
+externalPort = 8000
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
 mode = "parallel"
+author = "agent"
 
-[server]
-port = 5000
-host = "localhost"
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
 
-[app]
-working_directory = "FlightBuddyPro"
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
