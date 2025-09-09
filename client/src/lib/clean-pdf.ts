@@ -30,7 +30,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
             color: #000;
         }
         .logo-section {
-            margin-bottom: 19px;
+            margin-bottom: 18px;
             min-height: 55px;
         }
         .logo {
@@ -42,14 +42,14 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
             text-align: center; 
             font-size: 17.5px; 
             font-weight: bold; 
-            margin-bottom: 19px; 
+            margin-bottom: 18px; 
             letter-spacing: 1.75px;
         }
         .booking-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 19px;
+            margin-bottom: 18px;
             font-size: 11.75px;
         }
         .booking-ref {
@@ -60,7 +60,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
         }
         .flight-segment {
             border: 1px solid #000;
-            margin-bottom: 15px;
+            margin-bottom: 14px;
             background: white;
         }
         .segment-header {
@@ -75,7 +75,7 @@ export function generateWorkingPDF(formData: FlightBookingForm, branding?: Brand
             border-collapse: collapse;
         }
         .segment-table td {
-            padding: 15px 19px;
+            padding: 14px 19px;
             border-bottom: 1px solid #ddd;
             vertical-align: top;
         }
